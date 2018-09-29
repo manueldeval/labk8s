@@ -1,0 +1,3 @@
+lxc_bridge_name: labbr
+lxc_bridge_address: 10.0.4.1
+lxc_bridge_net_mask: 24

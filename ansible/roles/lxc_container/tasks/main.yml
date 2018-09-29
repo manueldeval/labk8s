@@ -1,0 +1,68 @@
+- name: Creation du container
+  shell: "lxc-create -t download -n {{ lxc_container_name }} -- --dist ubuntu --release bionic --arch amd64"
+  args:
+    creates: /var/lib/lxc/{{ lxc_container_name }}/config
+  register: container_created
+
+- name: Templating du fichier de configuration du container
+  template:
+    src: config
+    dest: /var/lib/lxc/{{ lxc_container_name }}/config
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+  register: container_configured
+
+- name: Configuration du DNS
+  template:
+    src: resolv.conf
+    dest: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/resolv.conf
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Desactivation du DHCP pour l'eth0 du container
+  template:
+    src: 10-lxc.yaml
+    dest: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/netplan/10-lxc.yaml
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+  register: eth0_configured
+
+- name: "Si un element de configuration a change le container doit etre stoppe"
+  shell: lxc-stop -n {{ lxc_container_name }} -k
+  failed_when: False
+  changed_when: False
+  when: >
+    eth0_configured is changed or
+    container_configured is changed
+
+- name: "Le container doit etre demarre"
+  shell: lxc-start -n {{ lxc_container_name }}
+  register: lxc_started
+  changed_when: False # TODO: Ajouter une condition sur stdout/stderr
+
+- name: "Openssh doit etre installe"
+  shell: lxc-attach -n {{ lxc_container_name }} -- apt install -y openssh-server
+  register: openssh_install
+  changed_when: False # TODO: Ajouter une condition sur stdout/stderr
+
+- name: "Python doit etre installe"
+  shell: lxc-attach -n {{ lxc_container_name }} -- apt install -y python
+  register: python_install
+  changed_when: False # TODO: Ajouter une condition sur stdout/stderr
+
+- name: "Creation du repertoire .ssh s'il n'existe pas"
+  file:
+    path: /var/lib/lxc/{{ lxc_container_name }}/rootfs/root/.ssh/
+    state: directory
+    mode: "u=rwx,g=,o="
+
+- name: "Copie de la clef rsa publique locale pour permettre la connexion ssh en root"
+  copy:
+    src: "{{lxc_container_ssh_pub_key}}"
+    dest: /var/lib/lxc/{{ lxc_container_name }}/rootfs/root/.ssh/authorized_keys
+    owner: root
+    group: root
+    mode: "u=rw,g=,o="

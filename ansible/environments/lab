@@ -1,0 +1,4 @@
+localhost ansible_connection=local
+
+[lab_host]
+localhost
