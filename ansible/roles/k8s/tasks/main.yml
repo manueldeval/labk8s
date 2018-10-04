@@ -1,0 +1,70 @@
+- name: "Installation de docker"
+  package:
+    name: docker.io
+    state: present
+
+- name: Creation du repertoire de configuration docker s'il n'exite pas
+  file:
+    path: /etc/systemd/system/docker.service.d/
+    state: directory
+    mode: 0755
+
+- name: Configuration du http-proxy.conf
+  template:
+    src: http-proxy.conf
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+  register: docker_http_conf
+
+- name: Redemarrage de docker si la configuration proxy a change
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: docker
+  when: docker_http_conf is changed
+
+- name: "Parametrage du service docker"
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: "Installation des packages necessaires a l'import de clef"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - curl
+    - gnupg2
+
+- name: Ajout de la clef de signature cloud.google.com
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: "Ajout du repo kubernetes"
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+  register: repo_added
+
+- name: "Update du cache apt"
+  apt:
+    update_cache: yes
+  when: repo_added is changed
+
+
+- name: "Installation de kubernetes"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - kubeadm=1.12.0-00
+    # - kubelet=1.11.0-00
+    # - kubernetes-cni=1.11.0-00
+
+- include: master.yml
+  when: k8s_master

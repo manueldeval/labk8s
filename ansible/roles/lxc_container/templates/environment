@@ -1,0 +1,11 @@
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+
+HTTP_PROXY={{ lxc_container_http_proxy }}
+HTTPS_PROXY={{ lxc_container_http_proxy }}
+http_proxy={{ lxc_container_http_proxy }}
+https_proxy={{ lxc_container_http_proxy }}
+
+# Le CIDR n'est normalement pas accepte par les applications... mais K8S les gere!
+# On ajoute donc le sous-reseau des noeuds LXC
+NO_PROXY=localhost,127.0.0.1,{{ lxc_container_http_no_proxy }}
+no_proxy=localhost,127.0.0.1,{{ lxc_container_http_no_proxy }}

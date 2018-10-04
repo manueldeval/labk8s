@@ -4,6 +4,18 @@
     creates: /var/lib/lxc/{{ lxc_container_name }}/config
   register: container_created
 
+- name: Suppression de l'id du container /etc/machine-id (il sera regenere au boot)
+  file:
+    path: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/etc/machine-id
+    state: absent
+  when: container_created is changed
+
+- name: Suppression de l'id du container /var/lib/dbus/machine-id
+  file:
+    path: /var/lib/lxc/{{ lxc_container_name }}/rootfs/var/lib/dbus/machine-id
+    state: absent
+  when: container_created is changed
+
 - name: Templating du fichier de configuration du container
   template:
     src: config
@@ -17,6 +29,14 @@
   template:
     src: resolv.conf
     dest: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/resolv.conf
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Configuration du /etc/environment
+  template:
+    src: environment
+    dest: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/environment
     owner: root
     group: root
     mode: "u=rw,g=r,o=r"

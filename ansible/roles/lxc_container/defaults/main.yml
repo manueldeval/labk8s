@@ -5,5 +5,6 @@ lxc_container_ipv4: 10.0.4.5
 lxc_container_gateway: 10.0.4.1
 lxc_container_net_mask: 24
 lxc_container_http_proxy: http://10.0.4.1:8888
+lxc_container_http_no_proxy: 
 lxc_container_ssh_pub_key: ~/.ssh/id_rsa.pub
 

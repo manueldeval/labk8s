@@ -1,0 +1,5 @@
+
+k8s_master: False
+k8s_http_proxy: 
+# Weave default pod network
+k8s_pod_network_cidr: 10.32.0.2/16 #10.244.0.0/16

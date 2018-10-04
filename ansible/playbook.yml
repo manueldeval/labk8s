@@ -26,18 +26,42 @@
         lxc_container_ipv4: 10.0.4.5
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888
+        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
+    - role: lxc_container
+      vars:
+        lxc_container_name: labslave1
+        lxc_container_bridge_name: labbr
+        lxc_container_mac: 00:16:3e:13:7f:13
+        lxc_container_ipv4: 10.0.4.6
+        lxc_container_gateway: 10.0.4.1
+        lxc_container_net_mask: 24
+        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
   tasks:
     - add_host:
         name: 10.0.4.5
         ansible_user: root
         groups: 
         - kubemaster
+    - add_host:
+        name: 10.0.4.6
+        ansible_user: root
+        groups: 
+        - kubeslave
 
 - name: "Kubemaster"
   hosts: kubemaster
-  tasks:
-    - debug:
-        msg: "Hello from kubemaster"
   roles:
-    - role: k8s_master
+    - role: k8s
+      vars: 
+        k8s_master: True
+        k8s_http_proxy: http://10.0.4.1:8888/
+
+- name: "Kubeslave"
+  hosts: kubeslave
+  roles:
+    - role: k8s
+      vars: 
+        k8s_master: False
+        k8s_http_proxy: http://10.0.4.1:8888/
