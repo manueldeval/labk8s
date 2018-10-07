@@ -6,7 +6,7 @@
 
 - name: Suppression de l'id du container /etc/machine-id (il sera regenere au boot)
   file:
-    path: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/etc/machine-id
+    path: /var/lib/lxc/{{ lxc_container_name }}/rootfs/etc/machine-id
     state: absent
   when: container_created is changed
 

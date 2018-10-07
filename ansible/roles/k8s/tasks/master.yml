@@ -1,12 +1,10 @@
 
 
-- debug:
-    msg: "kubeadm init --pod-network-cidr={{ k8s_pod_network_cidr }} --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} --ignore-preflight-errors=all"
-
 - name: "Initialisation de kubernetes"
-  shell: "kubeadm init --pod-network-cidr={{ k8s_pod_network_cidr }} --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} --ignore-preflight-errors=all &> /root/kubeinit.log"
+  shell: "kubeadm init --pod-network-cidr={{ k8s_pod_network_cidr }} --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} --ignore-preflight-errors=all > /root/kubeinit.log"
+  register: installation
   args:
-    creates: /etc/kubernetes/admin.conf
+    creates: /root/kubeinit.log
 
 - name: "Initialisation du repertoire configuration utilisateur."
   file:
@@ -23,21 +21,12 @@
     mode: "u=rw,g=,o="
     remote_src: yes
 
-- fail:
-   msg: "Stop there!... le reste est fait a la main pour l'instant..."
-
 - name: Installation de weave
-  shell: |
-    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" &> /root/weave.initialized
-    kubectl taint nodes --all node-role.kubernetes.io/master- &&> /root/weave.initialized
+  shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" > /root/weave.initialized
   args:
     creates: /root/weave.initialized
 
-
-# - name: Installation de flannel
-#   shell: |
-#     kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml &> /root/flannel.initialized
-#     kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml &>> /root/flannel.initialized
-#     kubectl taint nodes --all node-role.kubernetes.io/master- &&> /root/flannel.initialized
-#   args:
-#     creates: /root/flannel.initialized
+- name: Le master peut aussi faire slave.
+  shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
+  when: k8s_master_is_slave and (installation is changed)
+    
