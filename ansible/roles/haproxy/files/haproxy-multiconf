@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat /etc/haproxy/*.conf > /etc/haproxy/haproxy-multiconf.lst

@@ -1,0 +1,17 @@
+---
+
+#                                         |-> etcd1 [10.0.4.14]
+#                                         |-> etcd2 [10.0.4.15]
+#                     |-> HA1 [10.0.4.11]-|-> etcd3 [10.0.4.16]
+# -> VIP [10.0.4.10] -|                   |
+#                     |-> HA2 [10.0.4.12]-|
+#                                         |-> K8s(m) [10.0.4.5]
+#                                         |-> K8s(s) [10.0.4.6]
+# -> GW [10.0.4.1]
+#
+
+- import_playbook: host_prerequisites.yml 
+- import_playbook: haproxy.yml 
+- import_playbook: etcd.yml
+- import_playbook: master.yml 
+- import_playbook: slave.yml 

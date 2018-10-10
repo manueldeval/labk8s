@@ -1,0 +1,90 @@
+
+- name: Installation de wget
+  package:
+    name: wget
+
+- name: Creation du repertoire de donnees
+  file:
+    path: /var/lib/etcd
+    state: directory
+    owner: root
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Creation de l'espace de telechargement
+  file:
+    path: /root/products/
+    state: directory
+    owner: root
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: "Verification de l existence de l'archive en local"
+  stat:
+    path: /root/products/etcd-v{{ etcd_version }}-linux-amd64/
+  register: etcd_dir
+
+- name: Telechargement de etcd
+  unarchive:
+    src: https://github.com/coreos/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz
+    dest: /root/products/
+    remote_src: yes
+  when: etcd_dir is changed
+
+- name: Copie des binaire
+  copy:
+    src: /root/products/etcd-v{{ etcd_version }}-linux-amd64/{{item}}
+    dest: /usr/local/bin/{{item}}
+    remote_src: yes
+    owner: root
+    group: root
+    mode: "u+rwx,g+rwx,o+rx"
+  with_items:
+    - etcd
+    - etcdctl
+
+- name: "Generation du fichier systemd"
+  template:
+    src: etcd3.service
+    dest: /etc/systemd/system/etcd3.service
+    owner: root
+    group: root
+    mode: 0644
+  register: etcd_systemd
+
+- name: Rechargement du demon systemd
+  systemd:
+    name: etcd3.service
+    daemon_reload: yes
+    enabled: yes
+  when: etcd_systemd is changed
+
+- name: Etcd doit etre demarre
+  service:
+    name: etcd3.service
+    state: started
+
+
+  # shell: |
+  #      mkdir -p /var/lib/etcd
+  #      chown -R root:root /var/lib/etcd
+  #      chmod -R a+rw /var/lib/etcd
+# - name: Install new etcd
+#   shell: |
+#        wget 
+#        mkdir /tmp/etcd
+#        tar xzvf etcd-v{{ etcd_version }}-linux-amd64.tar.gz -C /tmp
+#        cd /tmp/etcd-v{{ etcd_version }}-linux-amd64
+#        mv etcd etcdctl /usr/local/bin
+#        chmod 755 /usr/local/bin/etcd /usr/local/bin/etcdctl
+# - template:
+#      src: ./etcd3.service.js
+#      dest: /etc/systemd/system/etcd3.service
+#      owner: root
+#      group: root
+#      mode: 0644
+# - name: Reload and start the services
+#   shell: |
+#      systemctl daemon-reload
+#      systemctl start  etcd3.service
+#      systemctl enable etcd3.service

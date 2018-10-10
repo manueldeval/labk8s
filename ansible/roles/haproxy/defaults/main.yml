@@ -1,0 +1,7 @@
+haproxy_vip: 10.0.4.10
+haproxy_virtual_router_id: 7
+haproxy_lvs_id: "haproxy_core"
+haproxy_master: true
+haproxy_eth: eth0
+haproxy_stats_user: user
+haproxy_stats_password: password

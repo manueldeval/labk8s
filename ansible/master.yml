@@ -1,0 +1,30 @@
+
+- name: "Creation du container master"
+  hosts: lab_host
+  become: True
+  roles:
+    - role: lxc_container
+      vars:
+        lxc_container_name: labmaster
+        lxc_container_bridge_name: labbr
+        lxc_container_mac: 00:16:3e:13:7f:12
+        lxc_container_ipv4: 10.0.4.5
+        lxc_container_gateway: 10.0.4.1
+        lxc_container_net_mask: 24
+        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
+  tasks:
+    - add_host:
+        name: 10.0.4.5
+        ansible_user: root
+        groups: 
+        - kubemaster
+
+- name: "Installation du slave K8S"
+  hosts: kubemaster
+  roles:
+    - role: k8s
+      vars: 
+        k8s_master: True
+        k8s_http_proxy: http://10.0.4.1:8888/
+        k8s_master_is_slave: True

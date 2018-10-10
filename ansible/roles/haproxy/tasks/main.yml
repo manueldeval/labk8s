@@ -1,0 +1,55 @@
+
+- name: "Installation de haproxy et de keepalived"
+  apt:  
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - haproxy
+    - keepalived
+    - psmisc
+
+- name: "On autorise l utilisation d'une interface non definie dans les fichiers"
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind 
+    value: "1" 
+    state: present
+    reload: yes
+
+- name: "Creation du fichier keepalived"
+  template:
+    src: keepalived.conf
+    dest: /etc/keepalived/keepalived.conf
+  notify:
+    - restart keepalived
+
+- name: "On s'assure que haproxy est bien lance"
+  service:
+    name: haproxy 
+    state: started
+
+- name: "On s'assure que keepalived est bien lance"
+  service: 
+    name: keepalived
+    state: started
+
+- name: "Mise en place du script multiconfiguration pour HAPROXY"
+  copy:
+    src: haproxy-multiconf
+    dest: /usr/local/bin/haproxy-multiconf
+    mode: u=rwx,g=r,o=r
+
+- name: "Modification du service HAPROXY"
+  copy:
+    src: haproxy.service
+    dest: /lib/systemd/system/haproxy.service
+    mode: u=rw,g=r,o=r
+  notify:
+    - restart haproxy
+
+- name: "Templating des fichiers de configuration"
+  template:
+    src: "{{ item }}"
+    dest: "/etc/haproxy/{{ item }}"
+  with_items:
+    - 00-global.conf
+    - 01-stats.conf

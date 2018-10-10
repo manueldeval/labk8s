@@ -1,0 +1,67 @@
+#============================================
+# Creation du slave
+#============================================
+- name: "Creation du container slave"
+  hosts: lab_host
+  become: True
+  roles:
+    - role: lxc_container
+      vars:
+        lxc_container_name: labetcd1
+        lxc_container_bridge_name: labbr
+        lxc_container_mac: 00:16:3e:13:7f:14
+        lxc_container_ipv4: 10.0.4.14
+        lxc_container_gateway: 10.0.4.1
+        lxc_container_net_mask: 24
+        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
+    - role: lxc_container
+      vars:
+        lxc_container_name: labetcd2
+        lxc_container_bridge_name: labbr
+        lxc_container_mac: 00:16:3e:13:7f:15
+        lxc_container_ipv4: 10.0.4.15
+        lxc_container_gateway: 10.0.4.1
+        lxc_container_net_mask: 24
+        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
+    - role: lxc_container
+      vars:
+        lxc_container_name: labetcd3
+        lxc_container_bridge_name: labbr
+        lxc_container_mac: 00:16:3e:13:7f:16
+        lxc_container_ipv4: 10.0.4.16
+        lxc_container_gateway: 10.0.4.1
+        lxc_container_net_mask: 24
+        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
+  tasks:
+    - add_host:
+        name: 10.0.4.14
+        ansible_user: root
+        groups: 
+        - etcd
+    - add_host:
+        name: 10.0.4.15
+        ansible_user: root
+        groups: 
+        - etcd
+    - add_host:
+        name: 10.0.4.16
+        ansible_user: root
+        groups: 
+        - etcd
+
+- name: "Installation de etcd"
+  hosts: etcd
+  tasks:
+    - debug:
+        msg: "Hello..."
+
+- name: "Installation de etcd"
+  hosts: etcd
+  serial: True
+  roles:
+    - role: etcd
+      vars:
+        etcd_group_name: etcd

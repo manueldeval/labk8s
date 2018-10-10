@@ -1,0 +1,25 @@
+[Unit]
+Description=etcd
+Documentation=https://github.com/coreos/etcd
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+LimitNOFILE=40000
+TimeoutStartSec=0
+
+ExecStart=/usr/local/bin/etcd --name etcd-{{ groups[etcd_group_name].index(inventory_hostname) + 1 }} \
+    --data-dir /var/lib/etcd \
+    --quota-backend-bytes 8589934592 \
+    --auto-compaction-retention 3 \
+    --listen-client-urls http://{{ hostvars[inventory_hostname]['ansible_'+etcd_if].ipv4.address }}:2379 \
+    --advertise-client-urls http://{{ hostvars[inventory_hostname]['ansible_'+etcd_if].ipv4.address }}:2379 \
+    --listen-peer-urls http://{{ hostvars[inventory_hostname]['ansible_'+etcd_if].ipv4.address }}:2380 \
+    --initial-advertise-peer-urls http://{{ hostvars[inventory_hostname]['ansible_'+etcd_if].ipv4.address }}:2380 \
+    --initial-cluster {% for host in groups[etcd_group_name] %}etcd-{{loop.index}}=http://{{ hostvars[host]['ansible_'+etcd_if].ipv4.address }}:2380{{ '' if loop.last else ','}}{% endfor %} \
+    --initial-cluster-token my-etcd-token \
+    --initial-cluster-state new
+
+[Install]
+WantedBy=multi-user.target
