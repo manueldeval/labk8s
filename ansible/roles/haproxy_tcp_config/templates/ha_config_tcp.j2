@@ -1,0 +1,19 @@
+frontend frontend_{{ haproxy_config_name }}
+    bind *:{{ haproxy_config_bind_port }}
+    mode tcp
+    option tcplog
+    timeout client  {{ haproxy_config_timeout_client }}
+    default_backend backend_{{ haproxy_config_name }}
+
+backend backend_{{ haproxy_config_name }}
+    mode tcp
+    option tcplog
+    option log-health-checks
+    option redispatch
+    log global
+    balance roundrobin
+    timeout connect {{ haproxy_config_timeout_connect }}
+    timeout server {{ haproxy_config_timeout_server }}
+ {% for node in backend_nodes %}
+    server {{ node.name }} {{ node.host }}:{{ node.port }} check
+ {% endfor %}

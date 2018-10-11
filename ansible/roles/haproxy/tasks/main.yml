@@ -53,3 +53,5 @@
   with_items:
     - 00-global.conf
     - 01-stats.conf
+  notify:
+    - restart haproxy

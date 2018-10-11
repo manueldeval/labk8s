@@ -28,11 +28,13 @@
         name: 10.0.4.11
         ansible_user: root
         groups: 
+        - lb
         - lb_master
     - add_host:
         name: 10.0.4.12
         ansible_user: root
-        groups: 
+        groups:
+        - lb 
         - lb_slave
 
 - name: "Installation de haproxy/keealived (Master)"

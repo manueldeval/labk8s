@@ -1,0 +1,6 @@
+- name: "Templating du fichier de configuration"
+  template:
+    src: "ha_config_tcp.j2"
+    dest: "/etc/haproxy/{{ haproxy_config_name }}.conf"
+  notify:
+    - restart haproxy

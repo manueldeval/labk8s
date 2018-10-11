@@ -52,11 +52,11 @@
         groups: 
         - etcd
 
-- name: "Installation de etcd"
+- name: "Force gathering"
   hosts: etcd
   tasks:
     - debug:
-        msg: "Hello..."
+        msg: "Force gathering"
 
 - name: "Installation de etcd"
   hosts: etcd
@@ -65,3 +65,22 @@
     - role: etcd
       vars:
         etcd_group_name: etcd
+
+- name: "Enregistrement du cluster etcd dans ha_proxy"
+  hosts: lb
+  serial: True
+  roles:
+    - role: haproxy_tcp_config
+      vars:
+        haproxy_config_name: 03-etcd
+        haproxy_config_bind_port: 2379
+        backend_nodes:
+        - name: node1
+          host: 10.0.4.14
+          port: 2379
+        - name: node2
+          host: 10.0.4.15
+          port: 2379
+        - name: node3
+          host: 10.0.4.16
+          port: 2379
