@@ -1,0 +1,11 @@
+apiVersion: kubeadm.k8s.io/v1alpha3
+kind: ClusterConfiguration
+kubernetesVersion: 1.12.0
+{% if ((k8s_external_etcd | default('')) != '') %}
+etcd:
+  external:
+    endpoints:
+    - {{k8s_external_etcd}}
+{% endif %}
+networking:
+  podSubnet: {{k8s_pod_network_cidr}}

@@ -14,7 +14,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: http://10.0.4.1:8888/
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
   tasks:
     - add_host:
         name: 10.0.4.6

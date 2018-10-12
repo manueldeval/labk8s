@@ -1,10 +1,24 @@
 
+# - name: "Initialisation de kubernetes"
+#   shell: "kubeadm init {{ ((k8s_external_etcd | default('')) != '')  | ternary('--external-etcd-endpoints=\"'+k8s_external_etcd+'\"','')  }} --pod-network-cidr={{ k8s_pod_network_cidr }} --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} --ignore-preflight-errors=all > /root/kubeinit.log"
+#   register: installation
+#   args:
+#     creates: /root/kubeinit.log
+
+- name: Configuration du config.yml
+  template:
+    src: config.yml
+    dest: /root/config.yml
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
 
 - name: "Initialisation de kubernetes"
-  shell: "kubeadm init --pod-network-cidr={{ k8s_pod_network_cidr }} --apiserver-advertise-address={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} --ignore-preflight-errors=all > /root/kubeinit.log"
+  shell: "kubeadm init --config /root/config.yml --ignore-preflight-errors=all > /root/kubeinit.log"
   register: installation
   args:
     creates: /root/kubeinit.log
+
 
 - name: "Initialisation du repertoire configuration utilisateur."
   file:
@@ -29,4 +43,5 @@
 - name: Le master peut aussi faire slave.
   shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
   when: k8s_master_is_slave and (installation is changed)
-    
+
+
