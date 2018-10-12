@@ -7,6 +7,19 @@ Le système cible est un PC sous Ubuntu 18.04. Les containers LXC sont basés eu
 
 Le déploiement de ce laboratoire est automatisé via des scripts Ansible - il doit donc être préalablement installé.
 
+# Architecture actuelle
+
+
+```
+                                                          |-> etcd1 [10.0.4.14]
+                                      |-> HA1 [10.0.4.11]-|-> etcd2 [10.0.4.15]
+ -> GW [10.0.4.1] -> VIP [10.0.4.10] -|-> HA2 [10.0.4.12]-|-> etcd3 [10.0.4.16]
+    brige de l'hote                   |
+                                      |-> K8s(m) [10.0.4.5]
+                                      |-> K8s(s) [10.0.4.6]
+
+```
+
 # Installation 
 
 ```
@@ -18,6 +31,5 @@ $ ansible-playbook -i environments/lab playbook.yml --extra-vars "ansible_become
 
 Ces limitations ne sont probablement pas les seules...
 
-- Le script ne supporte (actuellement) pas un déploiement derrière un proxy.
-- Seul le réseau K8S de type flannel est supporté.
+- Seul le réseau K8S de type weave est supporté.
  
