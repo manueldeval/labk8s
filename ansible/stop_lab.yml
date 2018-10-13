@@ -1,0 +1,18 @@
+---
+- import_playbook: host_prerequisites.yml 
+
+- name: Demarrage des containers
+  hosts: lab_host
+  become: True
+  tasks:
+    - lxc_container: 
+        name: "{{ item }}"
+        state: stopped
+      with_items: 
+        - labslave1
+        - labmaster
+        - labetcd1
+        - labetcd2
+        - labetcd3
+        - labha1
+        - labha2
