@@ -1,10 +1,11 @@
 
-- name: "Prerequis sur l'hote"
+- name: "Installation des packages necessaires"
   hosts: lab_host
   become: True
-  roles:
-    - role: lxc
-      vars:
-        lxc_bridge_name: labbr
-        lxc_bridge_address: 10.0.4.1
-        lxc_bridge_net_mask: 24
+  tasks:
+    - package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - lxc
+        - python-lxc

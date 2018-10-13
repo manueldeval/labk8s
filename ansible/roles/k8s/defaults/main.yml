@@ -1,7 +1,7 @@
 
 k8s_master: False
 k8s_http_proxy: 
-k8s_master_is_slave: True
+k8s_master_is_also_slave: True
 # Weave default pod network
 k8s_pod_network_cidr: 10.32.0.2/16 #10.244.0.0/16
 k8s_master_ip: 

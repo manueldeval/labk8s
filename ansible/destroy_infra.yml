@@ -1,0 +1,21 @@
+---
+- import_playbook: host_prerequisites.yml 
+
+- name: Suppression des containers
+  hosts: lab_host
+  become: True
+  tasks:
+    - lxc_container: 
+        name: "{{ item }}"
+        state: absent
+      with_items: 
+        - labslave1
+        - labmaster
+        - labha1
+        - labha2
+        - labetcd1
+        - labetcd2
+        - labetcd3
+    
+
+

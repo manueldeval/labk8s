@@ -22,14 +22,12 @@
 - name: "Verification de l existence de l'archive en local"
   stat:
     path: /root/products/etcd-v{{ etcd_version }}-linux-amd64/
-  register: etcd_dir
 
 - name: Telechargement de etcd
   unarchive:
     src: https://github.com/coreos/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz
     dest: /root/products/
     remote_src: yes
-  when: etcd_dir is changed
 
 - name: Copie des binaire
   copy:

@@ -14,6 +14,11 @@ backend backend_{{ haproxy_config_name }}
     balance roundrobin
     timeout connect {{ haproxy_config_timeout_connect }}
     timeout server {{ haproxy_config_timeout_server }}
- {% for node in backend_nodes %}
+{% for node in backend_nodes %}
     server {{ node.name }} {{ node.host }}:{{ node.port }} check
- {% endfor %}
+{% endfor %}
+{% if backend_nodes_group != '' %}
+{% for node in groups[backend_nodes_group] %}
+    server {{ backend_nodes_group }}{{ loop.index }} {{ hostvars[node]['ansible_'+backend_nodes_group_if].ipv4.address }}:{{ backend_nodes_group_port }} check
+{% endfor %}
+{% endif %}

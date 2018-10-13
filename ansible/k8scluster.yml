@@ -1,5 +1,4 @@
 
-
 - name: "Installation du slave K8S"
   hosts: kubemaster
   roles:
@@ -10,5 +9,12 @@
         k8s_master_is_also_slave: True
         k8s_external_etcd: http://10.0.4.10:2379
 
-
+- name: "Installation du slave K8S"
+  hosts: kubeslave
+  roles:
+    - role: k8s
+      vars: 
+        k8s_master: False
+        k8s_http_proxy: http://10.0.4.1:8888/
+        k8s_master_ip: 10.0.4.5
 

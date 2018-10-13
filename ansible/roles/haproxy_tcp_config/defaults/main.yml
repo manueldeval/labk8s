@@ -1,9 +1,12 @@
 haproxy_config_name: demo
 haproxy_config_bind_port: 12345
-backend_nodes:
-  - name:
-    host:
-    port:
+backend_nodes: []
+#  - name:
+#    host:
+#    port:
+backend_nodes_group:
+backend_nodes_group_port:
+backend_nodes_group_if: 
 haproxy_config_timeout_client: 1m
 haproxy_config_timeout_server: 1m
 haproxy_config_timeout_connect: 10s

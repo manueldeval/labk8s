@@ -1,62 +1,10 @@
-#============================================
-# Creation du slave
-#============================================
-- name: "Creation du container slave"
-  hosts: lab_host
-  become: True
-  roles:
-    - role: lxc_container
-      vars:
-        lxc_container_name: labetcd1
-        lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:14
-        lxc_container_ipv4: 10.0.4.14
-        lxc_container_gateway: 10.0.4.1
-        lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
-    - role: lxc_container
-      vars:
-        lxc_container_name: labetcd2
-        lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:15
-        lxc_container_ipv4: 10.0.4.15
-        lxc_container_gateway: 10.0.4.1
-        lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
-    - role: lxc_container
-      vars:
-        lxc_container_name: labetcd3
-        lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:16
-        lxc_container_ipv4: 10.0.4.16
-        lxc_container_gateway: 10.0.4.1
-        lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
-  tasks:
-    - add_host:
-        name: 10.0.4.14
-        ansible_user: root
-        groups: 
-        - etcd
-    - add_host:
-        name: 10.0.4.15
-        ansible_user: root
-        groups: 
-        - etcd
-    - add_host:
-        name: 10.0.4.16
-        ansible_user: root
-        groups: 
-        - etcd
+---
 
-- name: "Force gathering"
-  hosts: etcd
-  tasks:
-    - debug:
-        msg: "Force gathering"
+# la configuration d'un etcd depend de tout le cluster etcd,
+# et le cluster haproxy doit etre configure
+- name: "On force le gathering ansible"
+  hosts: lb,etcd
+  tasks: [ ]  
 
 - name: "Installation de etcd"
   hosts: etcd
@@ -74,13 +22,16 @@
       vars:
         haproxy_config_name: 03-etcd
         haproxy_config_bind_port: 2379
-        backend_nodes:
-        - name: node1
-          host: 10.0.4.14
-          port: 2379
-        - name: node2
-          host: 10.0.4.15
-          port: 2379
-        - name: node3
-          host: 10.0.4.16
-          port: 2379
+        backend_nodes_group: etcd
+        backend_nodes_group_if: eth0
+        backend_nodes_group_port: 2379
+
+        # - name: node1
+        #   host: 10.0.4.14
+        #   port: 2379
+        # - name: node2
+        #   host: 10.0.4.15
+        #   port: 2379
+        # - name: node3
+        #   host: 10.0.4.16
+        #   port: 2379
