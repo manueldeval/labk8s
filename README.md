@@ -22,14 +22,51 @@ Le déploiement de ce laboratoire est automatisé via des scripts Ansible - il d
 
 # Installation 
 
+## Récupération des sources
+
 ```
-$ cd ansible
-$ ansible-playbook -i environments/lab playbook.yml --extra-vars "ansible_become_pass=<PASSWORD>"
+$ git clone https://github.com/manueldeval/labk8s.git
+$ cd labk8s/ansible/
 ```
+
+## Configuration des variables
+
+TODO: Documenter les variables (apres le refactor des group_vars).
+
+## Creation de l'infrastructure
+
+```
+$ ./shells/create_infra.sh
+```
+
+## Installation de k8s
+
+```
+$ ./shells/install_all.sh
+```
+
+# Arret/démarrage du LAB
+
+L'installation démarre les containers, mais des scripts permettent de les arrêter ou de les démarrer.
+
+## Démarrage
+```
+$ ./shells/start_lab.sh
+```
+
+## Arrêt
+```
+$ ./shells/stop_lab.sh
+```
+
+
 
 # Limitations connues
 
 Ces limitations ne sont probablement pas les seules...
 
 - Seul le réseau K8S de type weave est supporté.
+- Le cluster etcd n'est actuellement pas sécurisé (par de certificats).
+- Presence obligatoire d'un ~/.ssh/id_rsa.pub sur l'hôte (celui-ci est poussé automatiquement dans le /root/.ssh/authorized_keys des containers pour permettre une connexion simplifiée).
+
  
