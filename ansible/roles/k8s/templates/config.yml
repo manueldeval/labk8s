@@ -9,3 +9,9 @@ etcd:
 {% endif %}
 networking:
   podSubnet: {{k8s_pod_network_cidr}}
+
+{% if ((k8s_external_api | default('')) != '') %}
+apiServerCertSANs:
+- "{{ k8s_external_api }}"
+controlPlaneEndpoint: "{{k8s_external_api}}:6443"
+{% endif %}

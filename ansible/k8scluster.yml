@@ -1,3 +1,23 @@
+---
+
+# la configuration d'un etcd depend de tout le cluster kubemaster,
+# et le cluster haproxy doit etre configure
+- name: "On force le gathering ansible"
+  hosts: lb,kubemaster
+  tasks: [ ]
+
+- name: "Enregistrement du cluster k8s dans ha_proxy"
+  hosts: lb
+  serial: True
+  roles:
+    - role: haproxy_tcp_config
+      vars:
+        haproxy_config_name: 04-k8s
+        haproxy_config_bind_port: 6443
+        backend_nodes_group: kubemaster
+        backend_nodes_group_if: eth0
+        backend_nodes_group_port: 6443
+
 
 - name: "Installation du master K8S"
   hosts: kubemaster
@@ -8,6 +28,7 @@
         k8s_http_proxy: "{{ http_proxy }}"
         k8s_master_is_also_slave: "{{ k8s_master_are_also_slave }}"
         k8s_external_etcd: http://10.0.4.10:2379
+        k8s_external_api: 10.0.4.10
 
 - name: "Installation du slave K8S"
   hosts: kubeslave
@@ -16,5 +37,5 @@
       vars: 
         k8s_master: False
         k8s_http_proxy: "{{ http_proxy }}"
-        k8s_master_ip: 10.0.4.5
+        k8s_master_ip: 10.0.4.4
 

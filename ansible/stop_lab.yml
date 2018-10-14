@@ -10,7 +10,8 @@
         state: stopped
       with_items: 
         - labslave1
-        - labmaster
+        - labmaster2
+        - labmaster1
         - labetcd1
         - labetcd2
         - labetcd3

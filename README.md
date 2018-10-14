@@ -15,8 +15,9 @@ Le déploiement de ce laboratoire est automatisé via des scripts Ansible - il d
                                       |-> HA1 [10.0.4.11]-|-> etcd2 [10.0.4.15]
  -> GW [10.0.4.1] -> VIP [10.0.4.10] -|-> HA2 [10.0.4.12]-|-> etcd3 [10.0.4.16]
     brige de l'hote                   |
-                                      |-> K8s(m) [10.0.4.5]
-                                      |-> K8s(s) [10.0.4.6]
+                                      |-> K8s(m1) [10.0.4.4]
+                                      |-> K8s(m2) [10.0.4.5]
+                                      |-> K8s(s)  [10.0.4.6]
 
 ```
 

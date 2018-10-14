@@ -6,3 +6,8 @@ k8s_master_is_also_slave: True
 k8s_pod_network_cidr: 10.32.0.2/16 #10.244.0.0/16
 k8s_master_ip: 
 k8s_external_etcd:
+
+# Ip du point d'acces des API:
+# - peut etre l'hote lui meme si il n'y a pas de cluster de masters
+# - sinon, c'est l'IP du loadbalancer.
+k8s_external_api: 

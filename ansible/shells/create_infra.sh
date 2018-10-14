@@ -7,6 +7,7 @@ ANSIBLE_DIR=$SCRIPT_DIR/..
 cd $ANSIBLE_DIR
 
 ansible-playbook -i environments/lab_host create_infra.yml --ask-become-pass
+ssh-keygen -f "~/.ssh/known_hosts" -R "10.0.4.4" &> /dev/null
 ssh-keygen -f "~/.ssh/known_hosts" -R "10.0.4.5" &> /dev/null
 ssh-keygen -f "~/.ssh/known_hosts" -R "10.0.4.6" &> /dev/null
 ssh-keygen -f "~/.ssh/known_hosts" -R "10.0.4.11" &> /dev/null

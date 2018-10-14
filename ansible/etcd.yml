@@ -26,12 +26,3 @@
         backend_nodes_group_if: eth0
         backend_nodes_group_port: 2379
 
-        # - name: node1
-        #   host: 10.0.4.14
-        #   port: 2379
-        # - name: node2
-        #   host: 10.0.4.15
-        #   port: 2379
-        # - name: node3
-        #   host: 10.0.4.16
-        #   port: 2379
