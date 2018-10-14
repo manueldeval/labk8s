@@ -31,13 +31,18 @@ $ cd labk8s/ansible/
 
 ## Configuration des variables
 
-TODO: Documenter les variables (apres le refactor des group_vars).
+Editer le fichier `./group_vars/all.yml.`
+
+Ce fichier permet de configurer:
+- la présence éventuelle d'un proxy http.
+- si nous désirons que les master k8s soient aussi des workers.
 
 ## Creation de l'infrastructure
 
 ```
 $ ./shells/create_infra.sh
 ```
+Ansible demande alors de passord root de l'hôte.
 
 ## Installation de k8s
 
@@ -53,12 +58,13 @@ L'installation démarre les containers, mais des scripts permettent de les arrê
 ```
 $ ./shells/start_lab.sh
 ```
+Ansible demande alors de passord root de l'hôte.
 
 ## Arrêt
 ```
 $ ./shells/stop_lab.sh
 ```
-
+Ansible demande alors de passord root de l'hôte.
 
 
 # Limitations connues
@@ -67,6 +73,6 @@ Ces limitations ne sont probablement pas les seules...
 
 - Seul le réseau K8S de type weave est supporté.
 - Le cluster etcd n'est actuellement pas sécurisé (par de certificats).
-- Presence obligatoire d'un ~/.ssh/id_rsa.pub sur l'hôte (celui-ci est poussé automatiquement dans le /root/.ssh/authorized_keys des containers pour permettre une connexion simplifiée).
+- Presence obligatoire d'un `~/.ssh/id_rsa.pub` sur l'hôte (celui-ci est poussé automatiquement dans le `/root/.ssh/authorized_keys` des containers pour permettre une connexion simplifiée).
 
  

@@ -24,7 +24,7 @@
         lxc_container_ipv4: 10.0.4.14
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
     - role: lxc_container
       vars:
@@ -34,7 +34,7 @@
         lxc_container_ipv4: 10.0.4.15
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
     - role: lxc_container
       vars:
@@ -44,7 +44,7 @@
         lxc_container_ipv4: 10.0.4.16
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
 
 - name: "Creation du cluster HAPROXY"
@@ -59,7 +59,7 @@
         lxc_container_ipv4: 10.0.4.11
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
     - role: lxc_container
       vars:
@@ -69,7 +69,7 @@
         lxc_container_ipv4: 10.0.4.12
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
 
 - name: "Creation du container k8s master"
@@ -84,7 +84,7 @@
         lxc_container_ipv4: 10.0.4.5
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
 
 - name: "Creation du container k8s slave"
@@ -99,6 +99,6 @@
         lxc_container_ipv4: 10.0.4.6
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
-        lxc_container_http_proxy: http://10.0.4.1:8888/
+        lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
 

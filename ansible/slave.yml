@@ -1,9 +1,0 @@
-
-- name: "Installation du slave K8S"
-  hosts: kubeslave
-  roles:
-    - role: k8s
-      vars: 
-        k8s_master: False
-        k8s_http_proxy: http://10.0.4.1:8888/
-        k8s_master_ip: 10.0.4.5
