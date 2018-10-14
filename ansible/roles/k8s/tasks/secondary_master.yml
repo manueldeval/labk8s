@@ -53,6 +53,6 @@
     mode: "u=rw,g=,o="
     remote_src: yes
 
-- name: Le master peut aussi faire slave.
-  shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
-  when: k8s_master_is_also_slave and (installation is changed)
+#- name: Le master peut aussi faire slave.
+#  shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
+#  when: k8s_master_is_also_slave and (installation is changed)

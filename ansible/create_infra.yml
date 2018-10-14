@@ -111,4 +111,15 @@
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
+    - role: lxc_container
+      vars:
+        lxc_container_name: labslave2
+        lxc_container_bridge_name: labbr
+        lxc_container_mac: 00:16:3e:13:7f:07
+        lxc_container_ipv4: 10.0.4.7
+        lxc_container_gateway: 10.0.4.1
+        lxc_container_net_mask: 24
+        lxc_container_http_proxy: "{{ http_proxy }}"
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
+
 
