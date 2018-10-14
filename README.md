@@ -18,6 +18,7 @@ Le déploiement de ce laboratoire est automatisé via des scripts Ansible - il d
                                       |-> K8s(m1) [10.0.4.4]
                                       |-> K8s(m2) [10.0.4.5]
                                       |-> K8s(s)  [10.0.4.6]
+                                      |-> K8s(s)  [10.0.4.7]
 
 ```
 
