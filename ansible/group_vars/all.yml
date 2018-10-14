@@ -1,0 +1,17 @@
+
+# Mettre la variable a vide si le lab n'est pas derriere un 
+# proxy d'entreprise.
+# Exemple:
+# http_proxy: 
+# Dans mon cas, j'utilise un proxy local a me poste de developpement,
+# c'est celui-ci qui effectue, ou non une indirection sur un proxy d'entreprise.
+# Ce proxy est alors aussi visible via le bridge.
+# cf: https://github.com/manueldeval/localproxy.git
+# Cette methode me permet de ne pas avoir de difference de configuration
+# qu'il y ait un proxy d'entreprise ou non denrniere mon poste.
+http_proxy: http://10.0.4.1:8888/
+
+# True se les masters k8s sont aussi des workers
+# False sinon
+k8s_master_are_also_slave: True
+
