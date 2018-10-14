@@ -1,0 +1,58 @@
+
+- name: "Creation du repertoire contenant les CA du master"
+  file:
+    path: /etc/kubernetes/pki
+    state: directory
+    mode: "u+rxw,g+rx,o+x"
+  with_items: 
+    - /etc/kubernetes
+    - /etc/kubernetes/pki
+
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/apiserver.crt out=/etc/kubernetes/pki/apiserver.crt mode="u+rw,g+r,o+r"
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/apiserver.key out=/etc/kubernetes/pki/apiserver.key mode="u+rw,g-rwx,o-rwx"
+
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/apiserver-kubelet-client.crt out=/etc/kubernetes/pki/apiserver-kubelet-client.crt mode="u+rw,g+r,o+r"
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/apiserver-kubelet-client.key out=/etc/kubernetes/pki/apiserver-kubelet-client.key mode="u+rw,g-rwx,o-rwx"
+
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/ca.crt out=/etc/kubernetes/pki/ca.crt mode="u+rw,g+r,o+r"
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/ca.key out=/etc/kubernetes/pki/ca.key mode="u+rw,g-rwx,o-rwx"
+
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/front-proxy-ca.crt out=/etc/kubernetes/pki/front-proxy-ca.crt mode="u+rw,g+r,o+r"
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/front-proxy-ca.key out=/etc/kubernetes/pki/front-proxy-ca.key mode="u+rw,g-rwx,o-rwx"
+
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/front-proxy-client.crt out=/etc/kubernetes/pki/front-proxy-client.crt mode="u+rw,g+r,o+r"
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/front-proxy-client.key out=/etc/kubernetes/pki/front-proxy-client.key mode="u+rw,g-rwx,o-rwx"
+
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/sa.key out=/etc/kubernetes/pki/sa.key mode="u+rw,g-rwx,o-rwx"
+- include_tasks: master_copy.yml  in=/etc/kubernetes/pki/sa.pub out=/etc/kubernetes/pki/sa.pub mode="u+rw,g-rwx,o-rwx"
+
+- name: "Recuperation de la commande de connexion au master"
+  shell: bash -c "cat /root/kubeinit.log | tail -n 2 | xargs"
+  delegate_to: "{{k8s_master_ip}}"
+  remote_user: root
+  register: k8s_join
+
+- name: "Le slave rejoint le master"
+  shell: "{{k8s_join.stdout}}  --ignore-preflight-errors=all --experimental-control-plane &> /root/kubejoin.log"
+  args:
+    creates: /root/kubejoin.log
+  register: installation
+
+- name: "Initialisation du repertoire configuration utilisateur."
+  file:
+    path: /root/.kube
+    state: directory
+    mode: "u=rwx,g=,o="
+  
+- name: Ansible copy files remote to remote
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/config
+    owner: root
+    group: root
+    mode: "u=rw,g=,o="
+    remote_src: yes
+
+- name: Le master peut aussi faire slave.
+  shell: kubectl taint nodes --all node-role.kubernetes.io/master-  
+  when: k8s_master_is_also_slave and (installation is changed)

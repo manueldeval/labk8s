@@ -20,8 +20,16 @@ lbha2
 [etcd]
 labetcd[1:3]
 
-[kubemaster]
+[kubemaster:children]
+kubemaster_leader
+kubemaster_followers
+
+[kubemaster_leader]
 labmaster1
+
+[kubemaster_followers]
+labmaster2
 
 [kubeslave]
 labslave1
+

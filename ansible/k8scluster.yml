@@ -18,17 +18,32 @@
         backend_nodes_group_if: eth0
         backend_nodes_group_port: 6443
 
-
 - name: "Installation du master K8S"
-  hosts: kubemaster
+  hosts: kubemaster_leader
   roles:
     - role: k8s
       vars: 
         k8s_master: True
+        # Pour la configuration de proxy sortant du service docker
         k8s_http_proxy: "{{ http_proxy }}"
         k8s_master_is_also_slave: "{{ k8s_master_are_also_slave }}"
         k8s_external_etcd: http://10.0.4.10:2379
         k8s_external_api: 10.0.4.10
+
+- name: "Installation des autres masters K8S"
+  hosts: kubemaster_followers
+  serial: True
+  roles:
+    - role: k8s
+      vars: 
+        k8s_master: True
+        k8s_secondary_master: True
+        # Pour la configuration de proxy sortant du service docker
+        k8s_http_proxy: "{{ http_proxy }}"
+        k8s_master_is_also_slave: "{{ k8s_master_are_also_slave }}"
+        # k8s_master_ip: Utilise seulement lors de l installation (join)
+        # TODO: plutot passer le groupe des masters et chercher le k8s_secondary_master=False 
+        k8s_master_ip: 10.0.4.4
 
 - name: "Installation du slave K8S"
   hosts: kubeslave
@@ -37,5 +52,7 @@
       vars: 
         k8s_master: False
         k8s_http_proxy: "{{ http_proxy }}"
+        # k8s_master_ip: Utilise seulement lors de l installation (join)
+        # TODO: plutot passer le groupe des masters et chercher le k8s_secondary_master=False 
         k8s_master_ip: 10.0.4.4
 

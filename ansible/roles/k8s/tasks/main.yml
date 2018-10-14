@@ -67,7 +67,10 @@
     # - kubernetes-cni=1.11.0-00
 
 - include_tasks: master.yml
-  when: (k8s_master) 
+  when: (k8s_master) and (not k8s_secondary_master) 
+
+- include_tasks: secondary_master.yml
+  when: (k8s_master) and (k8s_secondary_master)
 
 - include_tasks: slave.yml
-  when: (not k8s_master)
+  when: (not k8s_master) and (not k8s_secondary_master)

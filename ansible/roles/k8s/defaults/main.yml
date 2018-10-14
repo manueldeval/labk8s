@@ -11,3 +11,5 @@ k8s_external_etcd:
 # - peut etre l'hote lui meme si il n'y a pas de cluster de masters
 # - sinon, c'est l'IP du loadbalancer.
 k8s_external_api: 
+
+k8s_secondary_master: False

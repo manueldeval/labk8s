@@ -1,0 +1,13 @@
+
+- name: "Slurp {{in}}" 
+  slurp:
+    src: "{{in}}"
+  delegate_to: "{{k8s_master_ip}}"
+  remote_user: root
+  register: file
+
+- name: "Copy {{out}}"
+  copy:
+    dest: "{{out}}"
+    content: "{{ file['content'] | b64decode }}"
+    mode: "{{mode}}"
