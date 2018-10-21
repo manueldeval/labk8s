@@ -55,7 +55,7 @@
       vars:
         lxc_container_name: labha1
         lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:21
+        lxc_container_mac: 00:16:3e:13:7f:11
         lxc_container_ipv4: 10.0.4.11
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
@@ -65,7 +65,7 @@
       vars:
         lxc_container_name: labha2
         lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:22
+        lxc_container_mac: 00:16:3e:13:7f:12
         lxc_container_ipv4: 10.0.4.12
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
@@ -80,7 +80,7 @@
       vars:
         lxc_container_name: labmaster1
         lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:11
+        lxc_container_mac: 00:16:3e:13:7f:04
         lxc_container_ipv4: 10.0.4.4
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
@@ -90,7 +90,7 @@
       vars:
         lxc_container_name: labmaster2
         lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:12
+        lxc_container_mac: 00:16:3e:13:7f:05
         lxc_container_ipv4: 10.0.4.5
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
@@ -105,7 +105,7 @@
       vars:
         lxc_container_name: labslave1
         lxc_container_bridge_name: labbr
-        lxc_container_mac: 00:16:3e:13:7f:13
+        lxc_container_mac: 00:16:3e:13:7f:06
         lxc_container_ipv4: 10.0.4.6
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24

@@ -10,6 +10,7 @@
         state: absent
       with_items: 
         - labslave1
+        - labslave2
         - labmaster2
         - labmaster1
         - labha1

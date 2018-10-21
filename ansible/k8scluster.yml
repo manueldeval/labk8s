@@ -41,7 +41,7 @@
         # Pour la configuration de proxy sortant du service docker
         k8s_http_proxy: "{{ http_proxy }}"
         k8s_master_is_also_slave: "{{ k8s_master_are_also_slave }}"
-        # k8s_master_ip: Utilise seulement lors de l installation (join)
+        # k8s_master_ip: Utilise seulement lors de l installation (recuperation du fichier pour le join)
         # TODO: plutot passer le groupe des masters et chercher le k8s_secondary_master=False 
         k8s_master_ip: 10.0.4.4
 
@@ -52,7 +52,7 @@
       vars: 
         k8s_master: False
         k8s_http_proxy: "{{ http_proxy }}"
-        # k8s_master_ip: Utilise seulement lors de l installation (join)
+        # k8s_master_ip: Utilise seulement lors de l installation (recuperation du fichier pour le join)
         # TODO: plutot passer le groupe des masters et chercher le k8s_secondary_master=False 
         k8s_master_ip: 10.0.4.4
 

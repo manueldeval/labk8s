@@ -1,12 +1,12 @@
-lbha1     ansible_host=10.0.4.11  ansible_user=root
-lbha2     ansible_host=10.0.4.12  ansible_user=root
-labetcd1  ansible_host=10.0.4.14  ansible_user=root
-labetcd2  ansible_host=10.0.4.15  ansible_user=root
-labetcd3  ansible_host=10.0.4.16  ansible_user=root
-labmaster1 ansible_host=10.0.4.4  ansible_user=root
-labmaster2 ansible_host=10.0.4.5  ansible_user=root
-labslave1 ansible_host=10.0.4.6   ansible_user=root
-labslave2 ansible_host=10.0.4.7   ansible_user=root
+lbha1       ansible_host=10.0.4.11  ansible_user=root
+lbha2       ansible_host=10.0.4.12  ansible_user=root
+labetcd1    ansible_host=10.0.4.14  ansible_user=root
+labetcd2    ansible_host=10.0.4.15  ansible_user=root
+labetcd3    ansible_host=10.0.4.16  ansible_user=root
+labmaster1  ansible_host=10.0.4.4   ansible_user=root
+#labmaster2 ansible_host=10.0.4.5   ansible_user=root
+labslave1   ansible_host=10.0.4.6   ansible_user=root
+labslave2   ansible_host=10.0.4.7   ansible_user=root
 
 [lb:children]
 lb_master
@@ -23,13 +23,13 @@ labetcd[1:3]
 
 [kubemaster:children]
 kubemaster_leader
-kubemaster_followers
+#kubemaster_followers
 
 [kubemaster_leader]
 labmaster1
 
-[kubemaster_followers]
-labmaster2
+#[kubemaster_followers]
+#labmaster2
 
 [kubeslave]
 labslave1
