@@ -1,0 +1,9 @@
+- name: "Templating du fichiers"
+  template:
+    src: "{{file}}"
+    dest: "{{path}}/{{file}}"
+  register: template
+
+- name: "Application du fichier"
+  shell: "kubectl apply -f {{path}}/{{file}}"
+  when:  template is changed

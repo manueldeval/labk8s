@@ -15,3 +15,4 @@ http_proxy: http://10.0.4.1:8888/
 # False sinon
 k8s_master_are_also_slave: True
 
+install_ingress_demo: True

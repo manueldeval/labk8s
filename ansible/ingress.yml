@@ -27,6 +27,8 @@
   hosts: kubemaster_leader
   roles:
     - k8s_ingress
+    - role: k8s_ingress_demo
+      when: install_ingress_demo
 
 
 
