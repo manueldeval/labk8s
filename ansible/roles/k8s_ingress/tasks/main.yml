@@ -1,0 +1,33 @@
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml
+# kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
+
+- name: "Creation du repertoire contenant les deploiements de l'ingress"
+  file:
+    path: "{{k8s_ingress_deployments_path}}"
+    state: directory
+    mode: 0755
+
+- name: "Templating des fichiers de 'mandatory' des ingress"
+  template:
+    src: "mandatory.yaml"
+    dest: "{{k8s_ingress_deployments_path}}/mandatory.yaml"
+  register: k8s_mandatory
+
+- name: "Application du fichier mandatory"
+  shell: "kubectl apply -f {{k8s_ingress_deployments_path}}/mandatory.yaml"
+  when:  k8s_mandatory is changed
+
+- name: "Templating des fichiers de 'service-nodeport' des ingress"
+  template:
+    src: "service-nodeport.yaml"
+    dest: "{{k8s_ingress_deployments_path}}/service-nodeport.yaml"
+  register: k8s_service_nodeport
+
+- name: "Application du fichier service-nodeport"
+  shell: "kubectl apply -f {{k8s_ingress_deployments_path}}/service-nodeport.yaml"
+  when:  k8s_service_nodeport is changed
+
+
+
+

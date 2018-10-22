@@ -21,6 +21,10 @@ lbha2
 [etcd]
 labetcd[1:3]
 
+[kubecluster:children]
+kubemaster
+kubeslave
+
 [kubemaster:children]
 kubemaster_leader
 #kubemaster_followers

@@ -1,0 +1,4 @@
+k8s_ingress_controller_replicas: 2
+k8s_ingress_deployments_path: /root/ingress_deployments/
+k8s_ingress_http_nodeport: 30080
+k8s_ingress_https_nodeport: 30443
