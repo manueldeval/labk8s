@@ -1,0 +1,18 @@
+---
+- import_playbook: host_prerequisites.yml 
+
+- name: Suppression des containers
+  hosts: lab_host
+  become: True
+  tasks:
+    - shell: "lxc-snapshot -n {{ item }} -r snap0" 
+      with_items: 
+        - labslave1
+        - labslave2
+        - labmaster2
+        - labmaster1
+        - labha1
+        - labha2
+        - labetcd1
+        - labetcd2
+        - labetcd3
