@@ -28,7 +28,6 @@
   roles:
     - k8s_ingress
     - role: k8s_ingress_demo
+      vars:
+        k8s_ingress_demo_vhost: ingressdemo.10.0.4.10.xip.io
       when: install_ingress_demo
-
-
-

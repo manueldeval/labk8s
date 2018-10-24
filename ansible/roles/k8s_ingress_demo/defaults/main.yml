@@ -1,1 +1,2 @@
 k8s_ingress_demo_deployments_path: /root/ingress_demo/
+k8s_ingress_demo_vhost: ingressdemo.10.0.4.10.xip.io

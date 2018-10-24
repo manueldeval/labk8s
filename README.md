@@ -31,6 +31,13 @@ $ git clone https://github.com/manueldeval/labk8s.git
 $ cd labk8s/ansible/
 ```
 
+## Configuration de l'hote
+
+Sur l'hote local, ajouter `.xip.io,.nip.io` dans la variable d'environnement `NO_PROXY` (et eventuellement `no_proxy`) - par exemple dans le fichier `/etc/environment`.
+Le lab va largement se baser sur des noms de domaine du type `http://<appli>.10.0.4.10.xip.io`. Dans le cas contraire, et si les requetes http transitent par un serveur mandataire, c'est lui 
+qui fera la résolution de nom et tentera de contacter `10.0.4.10`... ce qui n'est évidemment pas possible car il s'agit d'une ip non routée sur l'hote local.
+
+
 ## Configuration des variables
 
 Editer le fichier `./group_vars/all.yml.`

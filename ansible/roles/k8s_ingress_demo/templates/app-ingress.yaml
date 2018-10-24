@@ -7,7 +7,8 @@ metadata:
   name: app-ingress
 spec:
   rules:
-  - http:
+  - host: {{ k8s_ingress_demo_vhost }}
+    http:
       paths:
       - backend:
           serviceName: appsvc1

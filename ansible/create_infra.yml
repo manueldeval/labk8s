@@ -25,7 +25,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16,.xip.io,.nip.io
     - role: lxc_container
       vars:
         lxc_container_name: labetcd2
@@ -35,7 +35,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16,.xip.io,.nip.io
     - role: lxc_container
       vars:
         lxc_container_name: labetcd3
@@ -45,7 +45,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.14,10.0.4.15,10.0.4.16,.xip.io,.nip.io
 
 - name: "Creation du cluster HAPROXY"
   hosts: lab_host
@@ -60,7 +60,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,.xip.io,.nip.io
     - role: lxc_container
       vars:
         lxc_container_name: labha2
@@ -70,7 +70,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,.xip.io,.nip.io
 
 - name: "Creation du container k8s master"
   hosts: lab_host
@@ -85,7 +85,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
     - role: lxc_container
       vars:
         lxc_container_name: labmaster2
@@ -95,7 +95,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
 
 - name: "Creation du container k8s slave"
   hosts: lab_host
@@ -110,7 +110,7 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
     - role: lxc_container
       vars:
         lxc_container_name: labslave2
@@ -120,6 +120,6 @@
         lxc_container_gateway: 10.0.4.1
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
-        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10
+        lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
 
 

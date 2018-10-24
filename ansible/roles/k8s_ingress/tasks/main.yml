@@ -1,6 +1,7 @@
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml
 # kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
+# kubectl exec -it nginx-ingress-controller-6d67c97dd6-nh9rk -n  ingress-nginx  -- cat /etc/nginx/nginx.conf
 
 - name: "Creation du repertoire contenant les deploiements de l'ingress"
   file:
