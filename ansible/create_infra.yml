@@ -86,6 +86,9 @@
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
+        lxc_container_mounts:
+        - src:  "{{ local_volume_storage_path }}"
+          dest: /data/lab/
     - role: lxc_container
       vars:
         lxc_container_name: labmaster2
@@ -96,6 +99,9 @@
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
+        lxc_container_mounts:
+        - src:  "{{ local_volume_storage_path }}"
+          dest: /data/lab/
 
 - name: "Creation du container k8s slave"
   hosts: lab_host
@@ -111,6 +117,9 @@
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
+        lxc_container_mounts:
+        - src:  "{{ local_volume_storage_path }}"
+          dest: /data/lab/
     - role: lxc_container
       vars:
         lxc_container_name: labslave2
@@ -121,5 +130,7 @@
         lxc_container_net_mask: 24
         lxc_container_http_proxy: "{{ http_proxy }}"
         lxc_container_http_no_proxy: 10.0.4.0/24,10.32.0.2/16,10.0.4.10,.xip.io,.nip.io
-
+        lxc_container_mounts:
+        - src:  "{{ local_volume_storage_path }}"
+          dest: /data/lab/
 

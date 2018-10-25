@@ -43,3 +43,7 @@ lxc.environment = HTTP_PROXY={{lxc_container_http_proxy}}
 lxc.environment = HTTPS_PROXY={{lxc_container_http_proxy}}
 lxc.environment = http_proxy={{lxc_container_http_proxy}}
 lxc.environment = https_proxy={{lxc_container_http_proxy}}
+
+{% for entry in lxc_container_mounts %}
+lxc.mount.entry={{ entry.src }} /var/lib/lxc/{{ lxc_container_name }}/rootfs/{{ entry.dest }} none bind 0 0
+{% endfor %}

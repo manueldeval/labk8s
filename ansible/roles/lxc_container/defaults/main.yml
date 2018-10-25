@@ -7,4 +7,9 @@ lxc_container_net_mask: 24
 lxc_container_http_proxy: http://10.0.4.1:8888
 lxc_container_http_no_proxy: 
 lxc_container_ssh_pub_key: ~/.ssh/id_rsa.pub
+lxc_container_mounts: []
 
+# lxc_container_mounts:
+#   - src:  /data/lab/
+#     target: /data/lab/
+  

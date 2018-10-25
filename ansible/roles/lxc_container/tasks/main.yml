@@ -16,6 +16,18 @@
     state: absent
   when: container_created is changed
 
+- name: Creation du repertoire dest pour le montage s'il n'existe pas
+  file:
+    path: /var/lib/lxc/{{ lxc_container_name }}/rootfs/{{item.dest}}
+    state: directory
+  with_items: "{{ lxc_container_mounts }}"
+
+- name: Creation du repertoire src pour le montage s'il n'existe pas
+  file:
+    path: "{{item.src}}"
+    state: directory
+  with_items: "{{ lxc_container_mounts }}"
+
 - name: Templating du fichier de configuration du container
   template:
     src: config
