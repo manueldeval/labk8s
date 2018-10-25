@@ -1,0 +1,6 @@
+- name: "On force le gathering ansible"
+  hosts: kubecluster
+  roles:
+    - role: k8s_flexvolume_lochost 
+
+

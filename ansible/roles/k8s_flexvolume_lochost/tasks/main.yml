@@ -1,0 +1,29 @@
+- name: Ouverture des droits d'ecriture sur le repertoire des volumes
+  file:
+    path: /data/lab/
+    state: directory
+    mode: "u=rwx,g=rwx,o=rwx"
+
+- name: Installation des outils necessaires au plugin
+  package:
+    name: jq
+    state: present
+
+- name: Creation du repertoire pour deposer le plugin
+  file:
+    path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/lab~lochost/
+    state: directory
+
+- name: Depot du plugin
+  template:
+    src: lochost
+    dest: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/lab~lochost/lochost
+    mode: "u=rwx,g=rx,o=rx"
+  register: plugin_pushed
+
+- name: Restart kubelet
+  service:
+    name: kubelet
+    state: restarted
+  when: plugin_pushed is changed
+

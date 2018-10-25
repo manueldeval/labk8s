@@ -1,0 +1,63 @@
+#! /bin/bash
+
+export VOLUME_DIR=/data/lab/
+
+do_init(){
+    echo "INIT..." &>> /tmp/lochost_log.txt
+    echo "{\"status\":\"Success\",\"capabilities\":{\"attach\":false}}"
+    exit 0
+}
+
+do_mount() {
+    TARGET_PATH=$1
+    JSON_PARAMS=$2
+
+    echo "MOUNT... on $TARGET_PATH with $JSON_PARAMS" &>> /tmp/lochost_log.txt
+
+    VOLUME_ID=$(echo ${JSON_PARAMS} | jq -r '.volumeID')
+    if [ "null" == "$VOLUME_ID" ]; then
+        echo "{\"status\": \"Failure\", \"message\": \"volumeID is mandatory.\"}"
+        exit 1
+    fi
+
+    mkdir -p  $VOLUME_DIR/$VOLUME_ID &>> /tmp/lochost_log.txt
+
+    mount -o bind $VOLUME_DIR/$VOLUME_ID $TARGET_PATH  &>> /tmp/lochost_log.txt
+
+    echo "{\"status\": \"Success\"}"
+    exit 0
+}
+
+do_unmount() {
+    TARGET_PATH=$1
+
+    echo "UNMOUNT... $TARGET_PATH" &>> /tmp/lochost_log.txt
+
+    umount $TARGET_PATH
+    
+    echo "{\"status\": \"Success\"}"
+    exit 0
+}
+
+
+op=$1
+shift
+case "$op" in
+    init)
+        do_init
+        ;;
+    mount)
+        do_mount $*
+        ;;
+    unmount)
+        do_unmount $*
+        ;;
+    *)
+        echo "{ \"status\": \"Not supported\" }"
+        exit 1
+esac
+
+exit 1
+
+
+

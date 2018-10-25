@@ -11,5 +11,5 @@ lxc_container_mounts: []
 
 # lxc_container_mounts:
 #   - src:  /data/lab/
-#     target: /data/lab/
+#     dest: /data/lab/
   
