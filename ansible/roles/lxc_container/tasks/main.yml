@@ -1,5 +1,5 @@
 - name: Creation du container
-  shell: "lxc-create -t download -n {{ lxc_container_name }} -- --dist ubuntu --release bionic --arch amd64"
+  shell: "lxc-create -t download -n {{ lxc_container_name }} -- --dist ubuntu --release cosmic --arch amd64"
   args:
     creates: /var/lib/lxc/{{ lxc_container_name }}/config
   register: container_created
@@ -73,6 +73,10 @@
 - name: "Le container doit etre demarre"
   shell: lxc-start -n {{ lxc_container_name }}
   register: lxc_started
+  changed_when: False # TODO: Ajouter une condition sur stdout/stderr
+
+- name: "Update distribution"
+  shell: lxc-attach -n {{ lxc_container_name }} -- apt-get update
   changed_when: False # TODO: Ajouter une condition sur stdout/stderr
 
 - name: "Openssh doit etre installe"
