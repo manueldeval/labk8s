@@ -1,11 +1,12 @@
 
+
 - name: "Recuperation de la commande de connexion au master"
-  shell: bash -c "cat /root/kubeinit.log | tail -n 2 | xargs"
+  shell: bash -c "kubeadm token create --print-join-command"
   delegate_to: "{{k8s_master_ip}}"
   remote_user: root
   register: k8s_join
 
 - name: "Le slave rejoint le master"
   shell: "{{k8s_join.stdout}}  --ignore-preflight-errors=all"
-    
+
 
