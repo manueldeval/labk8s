@@ -1,0 +1,24 @@
+# -des3 (permet un password)
+# openssl genrsa -des3 -out {{ certificate_authority_key }} 2048
+# Dans notre cas pas de password
+- name: "Creation du CA key"
+  shell: "openssl genrsa -out {{ certificate_authority_key }} 2048"
+  args:
+    creates: "{{ certificate_authority_key }}"
+
+- name: "Creation du CA pem"
+  shell: "openssl req -x509 -new -nodes -key {{ certificate_authority_key }} -sha256 -days 3650 -out {{ certificate_authority_pem }} -subj '{{certificate_authority_subject}}'"
+  args:
+    creates: "{{ certificate_authority_pem }}"
+
+- name: "(Ubuntu) Le certificat de l'authorite est depose dans le repertoire idoine"
+  copy:
+    src: "{{ certificate_authority_pem }}"
+    dest: /usr/local/share/ca-certificates
+    remote: yes
+  register: ca_cert
+
+- name: "Rechargement des certs"
+  shell: update-ca-certificates
+  when: ca_cert is changed
+

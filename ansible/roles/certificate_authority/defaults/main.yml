@@ -1,0 +1,4 @@
+
+certificate_authority_key: /var/lab/lab_certificate_authority.key
+certificate_authority_pem: /var/lab/lab_certificate_authority.crt
+certificate_authority_subject: /C=FR/ST=K8SLAB/L=K8SLAB/O=Dis/CN=fr.deman.k8slab
