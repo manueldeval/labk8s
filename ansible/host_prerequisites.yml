@@ -8,9 +8,10 @@
         state: present
       with_items:
         - lxc
+        - lxd
         - python-lxc
-  roles:
-    - role: certificate_authority
-      vars:
-        certificate_authority_key: /var/lab/lab_certificate_authority.key
-        certificate_authority_pem: /var/lab/lab_certificate_authority.crt
+  # roles:
+  #   - role: certificate_authority
+  #     vars:
+  #       certificate_authority_key: /var/lab/lab_certificate_authority.key
+  #       certificate_authority_pem: /var/lab/lab_certificate_authority.crt

@@ -21,6 +21,7 @@
 - name: Redemarrage de docker si la configuration proxy a change
   systemd:
     state: restarted
+    enabled: yes
     daemon_reload: yes
     name: docker
   when: docker_http_conf is changed
@@ -62,7 +63,7 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - kubeadm=1.13.0-00
+    - "kubeadm={{k8s_version}}-00"
     # - kubelet=1.11.0-00
     # - kubernetes-cni=1.11.0-00
 

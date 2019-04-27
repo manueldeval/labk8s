@@ -35,6 +35,13 @@
     mode: "u=rw,g=,o="
     remote_src: yes
 
+  
+- name: Ansible copy files remote to remote
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube/labconfig
+    flat: yes
+
 - name: Installation de weave
   shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" > /root/weave.initialized
   args:

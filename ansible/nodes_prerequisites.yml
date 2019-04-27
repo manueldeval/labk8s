@@ -1,0 +1,11 @@
+# - name: "Installation du cacert"
+#   hosts: all
+#   tasks:
+#   - name: "(Ubuntu) Le certificat de l'authorite est depose dans le repertoire idoine"
+#     copy:
+#       src: "/var/lab/lab_certificate_authority.crt"
+#       dest: /usr/local/share/ca-certificates
+#     register: ca_cert
+#   - name: "Rechargement des certs"
+#     shell: update-ca-certificates
+#     when: ca_cert is changed

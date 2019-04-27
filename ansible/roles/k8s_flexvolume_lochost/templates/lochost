@@ -21,7 +21,7 @@ do_mount() {
     fi
 
     mkdir -p  $VOLUME_DIR/$VOLUME_ID &>> /tmp/lochost_log.txt
-
+    chmod a+rwx $VOLUME_DIR/$VOLUME_ID &>> /tmp/lochost_log.txt
     mount -o bind $VOLUME_DIR/$VOLUME_ID $TARGET_PATH  &>> /tmp/lochost_log.txt
 
     echo "{\"status\": \"Success\"}"

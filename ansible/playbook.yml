@@ -1,5 +1,5 @@
 ---
-
+- import_playbook: nodes_prerequisites.yml
 - import_playbook: haproxy.yml
 - import_playbook: etcd.yml
 - import_playbook: k8scluster.yml 

@@ -9,7 +9,8 @@
 # cf: https://github.com/manueldeval/localproxy.git
 # Cette methode me permet de ne pas avoir de difference de configuration
 # qu'il y ait un proxy d'entreprise ou non denrniere mon poste.
-http_proxy: http://10.0.4.1:8888/
+#http_proxy: http://10.0.4.1:8888/
+http_proxy:
 
 # True se les masters k8s sont aussi des workers
 # False sinon

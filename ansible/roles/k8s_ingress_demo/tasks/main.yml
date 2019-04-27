@@ -6,11 +6,20 @@
     state: directory
     mode: 0755
 
-- include_tasks: template_apply.yml path="{{k8s_ingress_demo_deployments_path}}" file=app-deployment.yaml
+- include_tasks: template_apply.yml 
+  vars:
+    path: "{{k8s_ingress_demo_deployments_path}}" 
+    file: app-deployment.yaml
 
-- include_tasks: template_apply.yml path="{{k8s_ingress_demo_deployments_path}}" file=app-service.yaml
+- include_tasks: template_apply.yml 
+  vars:
+    path: "{{k8s_ingress_demo_deployments_path}}" 
+    file: app-service.yaml
 
-- include_tasks: template_apply.yml path="{{k8s_ingress_demo_deployments_path}}" file=app-ingress.yaml
+- include_tasks: template_apply.yml 
+  vars:
+    path: "{{k8s_ingress_demo_deployments_path}}" 
+    file: app-ingress.yaml
 
 
 

@@ -13,3 +13,4 @@ k8s_external_etcd:
 k8s_external_api: 
 
 k8s_secondary_master: False
+k8s_version: 1.14.1
